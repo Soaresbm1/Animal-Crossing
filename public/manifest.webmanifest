@@ -1,0 +1,20 @@
+{
+  "name": "Petite Île — Manette",
+  "short_name": "Petite Île",
+  "description": "Manette tactile pour le prototype Petite Île.",
+  "lang": "fr",
+  "start_url": "/controller",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7edcf",
+  "theme_color": "#173f3a",
+  "icons": [
+    {
+      "src": "/icons/petite-ile.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
