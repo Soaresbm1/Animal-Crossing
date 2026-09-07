@@ -1,4 +1,5 @@
 import { BrandMark } from './BrandMark'
+import { House, Landscape, Player, Tree } from './IllustratedDecor'
 
 export function WelcomeScreen({ onStart }: { onStart: () => void }) {
   return (
@@ -11,14 +12,12 @@ export function WelcomeScreen({ onStart }: { onStart: () => void }) {
 
       <section className="welcome-card" aria-labelledby="welcome-title">
         <div className="welcome-card__art" aria-hidden="true">
-          <div className="mini-island">
-            <span className="mini-island__water" />
-            <span className="mini-island__sand" />
-            <span className="mini-island__grass" />
-            <span className="mini-island__house"><i /></span>
-            <span className="mini-island__tree mini-island__tree--one" />
-            <span className="mini-island__tree mini-island__tree--two" />
-            <span className="mini-island__person" />
+          <div className="welcome-island">
+            <Landscape />
+            <House />
+            <Tree className="scene-tree--one" />
+            <Tree className="scene-tree--two" />
+            <Player x={50} y={58} indoors={false} />
           </div>
         </div>
 
@@ -26,7 +25,7 @@ export function WelcomeScreen({ onStart }: { onStart: () => void }) {
           <p className="eyebrow">Un petit monde à votre rythme</p>
           <h1 id="welcome-title"><BrandMark /></h1>
           <p className="welcome-card__lead">
-            Explorez le rivage, cueillez quelques trésors et retrouvez la chaleur de votre maison.
+            Rencontrez Lila, préparez un goûter de pommes et offrez à votre maison son premier fauteuil.
           </p>
           <button className="primary-button" type="button" onClick={onStart}>
             <span>Explorer l’île</span>

@@ -1,6 +1,8 @@
 export type SceneId = "island" | "house";
 
 export type CollectibleType = "shell" | "apple" | "flower";
+export type FishType = "sardine" | "perch" | "carp";
+export type ItemType = CollectibleType | FishType;
 
 export interface Vector2 {
   readonly x: number;
@@ -32,7 +34,7 @@ export interface CollectibleState {
 
 export interface InventoryItem {
   readonly id: string;
-  readonly type: CollectibleType;
+  readonly type: ItemType;
   readonly name: string;
 }
 
@@ -46,6 +48,14 @@ export interface GameClock {
 }
 
 export interface GameState {
+  readonly coins: number;
+  readonly quest: "new" | "active" | "complete";
+  readonly furniture: { readonly owned: boolean; readonly position: Vector2 | null };
+  readonly fishing: {
+    readonly rodOwned: boolean;
+    readonly collection: readonly FishType[];
+    readonly catchCount: number;
+  };
   readonly scene: SceneId;
   readonly player: PlayerState;
   readonly collectibles: readonly CollectibleState[];
@@ -57,6 +67,7 @@ export interface GameState {
 export type DayPhase = "dawn" | "day" | "dusk" | "night";
 
 export type InteractionEvent =
+  | { readonly type: "message"; readonly text: string }
   | { readonly type: "collected"; readonly item: InventoryItem }
   | { readonly type: "inventory-full"; readonly item: CollectibleState }
   | { readonly type: "entered-house" }

@@ -52,6 +52,9 @@ export const INITIAL_COLLECTIBLES: readonly CollectibleState[] = [
     position: { x: 36, y: 38 },
     collected: false,
   },
+  ...[{ x: 24, y: 48 }, { x: 64, y: 76 }, { x: 80, y: 38 }, { x: 39, y: 66 }].map((position, index) => ({
+    id: `apple-${index + 2}`, type: 'apple' as const, name: 'Pomme dorée', position, collected: false,
+  })),
 ];
 
 /** Public, UI-friendly name for the immutable world item definitions. */

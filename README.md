@@ -2,9 +2,32 @@
 
 **Petite Île** est un prototype web original et indépendant d’exploration 2.5D. Le projet n’est ni affilié à Nintendo, ni approuvé par Nintendo, et n’utilise aucun contenu officiel de la franchise *Animal Crossing*.
 
-Ce dépôt contient le jeu, une manette web pour iPhone et le serveur temps réel qui les associe. Il ne correspond pas à un déploiement public actuellement disponible.
+Cette version se joue au clavier sur PC. Le code de la manette iPhone reste dans le dépôt, mais son association est désactivée sur l’écran de jeu. Il ne s’agit pas d’un déploiement public.
+
+## Première mission : mon premier chez-moi
+
+1. Rejoindre Lila à gauche du chemin et appuyer sur **Espace** pour accepter sa demande.
+2. Ramasser les **cinq pommes** réparties sur l’île, puis retourner auprès de Lila : elle remet **60 pièces** et récupère les pommes.
+3. Rejoindre la boutique au nord-est, appuyer sur **Espace** et cliquer sur **Acheter le fauteuil · 40 pièces** dans la fenêtre du marché.
+4. Entrer dans la maison par sa porte avec Espace, marcher au centre du tapis, ouvrir le sac avec **E**, puis cliquer sur **Installer le fauteuil ici**. Le même bouton permet ensuite de le déplacer.
+
+Tout reste dans la fenêtre du jeu : **Espace** près de Lila ouvre son dialogue ; **Espace** près du marché ouvre la boutique ; **E** ouvre ou ferme l’inventaire. **Échap** ou la croix ferme chaque fenêtre. Le jeu se met en pause pendant leur ouverture et le clavier reste dans la fenêtre de dialogue. Il n’y a plus de panneau sous le jeu ni de colonne latérale.
+
+## Pêche au ponton
+
+La canne du rivage coûte **25 pièces** au petit marché. Une fois équipée, rejoindre le ponton au sud et appuyer sur **Espace**. Dans le mini-jeu, lancer la ligne, attendre le message **« Ça mord ! »**, puis appuyer rapidement sur Espace. Une réaction trop tôt ou après la fenêtre de 950 ms laisse le poisson s’échapper.
+
+Trois espèces peuvent rejoindre le carnet de pêche : sardine argentée, perche soleil et carpe miroir. Les poissons occupent une place dans le sac et peuvent être vendus, mais une espèce découverte reste inscrite dans le carnet. Le sac plein empêche une nouvelle capture. La canne, le carnet et le nombre de prises sont sauvegardés immédiatement ; les sauvegardes de version 2 sont migrées automatiquement.
+
+La boutique rachète les coquillages (12 pièces), fleurs (8) et pommes (5). Les pommes sont protégées de la vente jusqu’à la fin de la mission. Les récoltes vendues réapparaissent sur l’île. Les achats, ventes, récompenses et placements sont sauvegardés immédiatement. Les sauvegardes originales sont migrées vers la version 2 en conservant le sac, la position et l’horloge et en ajoutant les quatre nouvelles pommes.
+
+Se déplacer avec **ZQSD / WASD / flèches** ; interagir avec **Espace / Entrée**. Les boutons de boutique et de décoration sont aussi accessibles avec **Tab puis Entrée**. Un bouton grisé indique qu’il faut se rapprocher, entrer dans la maison ou obtenir suffisamment de pièces.
+
+Les sections consacrées à la manette ci-dessous décrivent le prototype historique, désormais mis de côté.
 
 ## Fonctionnalités
+
+La direction visuelle utilise des illustrations SVG originales : rivage irrégulier, ponton, sentiers, cottage, arbres et personnages assortis. L’interface adopte un style carnet entièrement superposé au jeu : dialogues, marché et inventaire s’ouvrent sans allonger la page. L’accueil et l’intérieur reprennent la même palette. Les animations d’eau, de nuages et de pêche respectent le réglage système de réduction des mouvements ; aucun service d’images ni téléchargement de polices n’est nécessaire.
 
 - exploration d’une île et de l’intérieur d’une maison ;
 - déplacements au clavier ou avec un joystick tactile sur iPhone ;

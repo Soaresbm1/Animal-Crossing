@@ -4,6 +4,9 @@ const itemSymbol: Record<string, string> = {
   shell: '◒',
   apple: '●',
   flower: '✿',
+  sardine: '⌁',
+  perch: '◈',
+  carp: '◒',
 }
 
 export function Inventory({ slots }: { slots: readonly InventorySlot[] }) {

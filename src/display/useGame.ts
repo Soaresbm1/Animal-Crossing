@@ -4,8 +4,17 @@ import {
   interactWithResult,
   loadGame,
   saveGame,
+  progressAction,
+  LILA_POSITION,
+  SHOP_POSITION,
+  near,
+  FISHING_POSITION,
+  catchFish,
+  type FishType,
+  type ProgressAction,
   type GameState,
   type InteractionEvent,
+  type InteractionResult,
   type MoveInput,
 } from '../game'
 
@@ -24,6 +33,8 @@ const MOVEMENT_KEYS: Record<string, MoveInput> = {
 
 const eventMessage = (event: InteractionEvent): string | null => {
   switch (event.type) {
+    case 'message':
+      return event.text
     case 'collected':
       return `${event.item.name} ajouté à l’inventaire`
     case 'inventory-full':
@@ -40,18 +51,25 @@ const eventMessage = (event: InteractionEvent): string | null => {
 const isTypingTarget = (target: EventTarget | null) =>
   target instanceof HTMLInputElement ||
   target instanceof HTMLTextAreaElement ||
-  target instanceof HTMLSelectElement ||
-  target instanceof HTMLButtonElement
+  target instanceof HTMLSelectElement
 
 export interface GameControls {
+  panel: 'lila' | 'shop' | 'inventory' | 'fishing' | null
+  closePanel: () => void
+  toggleInventory: () => void
   state: GameState
   message: string | null
   setRemoteMovement: (movement: MoveInput) => void
   clearRemoteMovement: () => void
   act: () => void
+  progress: (action: ProgressAction) => void
+  catchFish: (species: FishType) => boolean
 }
 
-export function useGame(): GameControls {
+export function useGame(enabled = true): GameControls {
+  const [panel, setPanel] = useState<GameControls['panel']>(null)
+  const closePanel = useCallback(() => setPanel(null), [])
+  const toggleInventory = useCallback(() => setPanel(current => current === 'inventory' ? null : 'inventory'), [])
   const [state, setState] = useState<GameState>(() => loadGame())
   const [message, setMessage] = useState<string | null>(null)
   const latestState = useRef(state)
@@ -68,17 +86,40 @@ export function useGame(): GameControls {
     window.clearTimeout(messageTimer.current)
     setMessage(nextMessage)
     if (nextMessage) {
-      messageTimer.current = window.setTimeout(() => setMessage(null), 2_600)
+      messageTimer.current = window.setTimeout(() => setMessage(null), 6_000)
     }
   }, [])
 
-  const act = useCallback(() => {
-    setState((current) => {
-      const result = interactWithResult(current)
-      showMessage(eventMessage(result.event))
-      return result.state
-    })
+  const commit = useCallback((result: InteractionResult) => {
+    latestState.current = result.state
+    setState(result.state)
+    saveGame(result.state)
+    showMessage(eventMessage(result.event))
   }, [showMessage])
+
+  const act = useCallback(() => {
+    if (panel) return
+    const current = latestState.current
+    if (current.scene === 'island' && near(current, LILA_POSITION)) { setPanel('lila'); return }
+    if (current.scene === 'island' && near(current, SHOP_POSITION)) { setPanel('shop'); return }
+    if (current.scene === 'island' && near(current, FISHING_POSITION)) {
+      if (current.fishing.rodOwned) setPanel('fishing')
+      else commit({ state: current, event: { type: 'message', text: 'Il te faut une canne à pêche du petit marché.' } })
+      return
+    }
+    commit(interactWithResult(current))
+  }, [commit, panel])
+
+  const progress = useCallback((action: ProgressAction) => {
+    commit(progressAction(latestState.current, action))
+  }, [commit])
+
+  const catchCaughtFish = useCallback((species: FishType) => {
+    const previous = latestState.current
+    const result = catchFish(previous, species)
+    commit(result)
+    return result.state !== previous
+  }, [commit])
 
   const clearRemoteMovement = useCallback(() => {
     remoteMovement.current = { x: 0, y: 0 }
@@ -94,16 +135,21 @@ export function useGame(): GameControls {
   }, [])
 
   useEffect(() => {
+    if (!enabled) return
+    const keys = pressedKeys.current
     const handleKeyDown = (event: KeyboardEvent) => {
       if (isTypingTarget(event.target)) return
       const key = event.key.toLowerCase()
+      if (key === 'e' && !event.repeat) { event.preventDefault(); toggleInventory(); return }
+      if (key === 'escape') { event.preventDefault(); closePanel(); return }
+      if (panel) return
 
       if (key in MOVEMENT_KEYS) {
         event.preventDefault()
         pressedKeys.current.add(key)
       }
 
-      if ((key === ' ' || key === 'enter') && !event.repeat) {
+      if ((key === ' ' || key === 'enter') && !event.repeat && !(event.target instanceof HTMLButtonElement)) {
         event.preventDefault()
         act()
       }
@@ -119,13 +165,15 @@ export function useGame(): GameControls {
     window.addEventListener('blur', clearKeyboard)
 
     return () => {
+      keys.clear()
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
       window.removeEventListener('blur', clearKeyboard)
     }
-  }, [act])
+  }, [act, enabled, panel, toggleInventory, closePanel])
 
   useEffect(() => {
+    if (!enabled || panel) return
     let frame = 0
     let previous = performance.now()
 
@@ -149,7 +197,7 @@ export function useGame(): GameControls {
 
     frame = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(frame)
-  }, [])
+  }, [enabled, panel])
 
   useEffect(() => {
     const saveProgress = () => saveGame(latestState.current)
@@ -170,5 +218,5 @@ export function useGame(): GameControls {
     [],
   )
 
-  return { state, message, setRemoteMovement, clearRemoteMovement, act }
+  return { state, message, panel, closePanel, toggleInventory, setRemoteMovement, clearRemoteMovement, act, progress, catchFish: catchCaughtFish }
 }

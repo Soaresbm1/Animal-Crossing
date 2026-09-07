@@ -3,14 +3,16 @@ import { clampToBounds, createInitialGameState, normalizeMovement } from "./engi
 import type {
   CollectibleState,
   CollectibleType,
+  FishType,
   GameState,
   InventoryItem,
   InventorySlot,
+  ItemType,
   SceneId,
   Vector2,
 } from "./types";
 
-export const SAVE_VERSION = 1;
+export const SAVE_VERSION = 3;
 export const SAVE_KEY = "petite-ile:save";
 
 export interface GameStorage {
@@ -30,6 +32,8 @@ const collectibleTypes = new Set<CollectibleType>([
   "apple",
   "flower",
 ]);
+const fishTypes = new Set<FishType>(["sardine", "perch", "carp"]);
+const itemTypes = new Set<ItemType>([...collectibleTypes, ...fishTypes]);
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
@@ -42,6 +46,10 @@ const isScene = (value: unknown): value is SceneId =>
 
 const isCollectibleType = (value: unknown): value is CollectibleType =>
   typeof value === "string" && collectibleTypes.has(value as CollectibleType);
+const isItemType = (value: unknown): value is ItemType =>
+  typeof value === "string" && itemTypes.has(value as ItemType);
+const isFishType = (value: unknown): value is FishType =>
+  typeof value === "string" && fishTypes.has(value as FishType);
 
 function parseVector(value: unknown): Vector2 | null {
   if (!isRecord(value) || !isFiniteNumber(value.x) || !isFiniteNumber(value.y)) {
@@ -55,7 +63,7 @@ function parseInventoryItem(value: unknown): InventoryItem | null {
     !isRecord(value) ||
     typeof value.id !== "string" ||
     value.id.length === 0 ||
-    !isCollectibleType(value.type) ||
+    !isItemType(value.type) ||
     typeof value.name !== "string"
   ) {
     return null;
@@ -90,7 +98,7 @@ function parseCollectible(value: unknown): CollectibleState | null {
  * Validates untrusted persisted data and returns a detached state. Coordinates
  * are clamped so a valid-but-edited save cannot strand the player off-map.
  */
-function parseGameState(value: unknown): GameState | null {
+function parseGameState(value: unknown, version: number): GameState | null {
   if (
     !isRecord(value) ||
     !isScene(value.scene) ||
@@ -135,7 +143,34 @@ function parseGameState(value: unknown): GameState | null {
     inventory.push(item);
   }
 
+  const defaults = createInitialGameState();
+  const original = version === 1;
+  const coins = original ? 0 : value.coins;
+  const quest = original ? 'new' : value.quest;
+  const furniture = original ? defaults.furniture : value.furniture;
+  const fishing = version < 3 ? defaults.fishing : value.fishing;
+  if (!isFiniteNumber(coins) || !Number.isSafeInteger(coins) || coins < 0 ||
+      (quest !== 'new' && quest !== 'active' && quest !== 'complete') ||
+      !isRecord(furniture) || typeof furniture.owned !== 'boolean' ||
+      !isRecord(fishing) || typeof fishing.rodOwned !== 'boolean' ||
+      !Array.isArray(fishing.collection) || !Number.isSafeInteger(fishing.catchCount) ||
+      !isFiniteNumber(fishing.catchCount) || fishing.catchCount < 0) return null;
+  const collection: FishType[] = [];
+  for (const species of fishing.collection) {
+    if (!isFishType(species) || collection.includes(species)) return null;
+    collection.push(species);
+  }
+  const furniturePosition = furniture.position === null ? null : parseVector(furniture.position);
+  if (furniture.position !== null && (!furniturePosition || !furniture.owned)) return null;
+  if (original) {
+    for (const item of defaults.collectibles) {
+      if (!collectibleIds.has(item.id)) collectibles.push(item);
+    }
+  }
   return {
+    coins, quest,
+    furniture: { owned: furniture.owned, position: furniturePosition ? clampToBounds(furniturePosition, { minX: 36, maxX: 66, minY: 53, maxY: 72 }) : null },
+    fishing: { rodOwned: fishing.rodOwned, collection, catchCount: fishing.catchCount },
     scene: value.scene,
     player: {
       position: clampToBounds(position, SCENE_BOUNDS[value.scene]),
@@ -165,12 +200,12 @@ export function decodeGameState(serialized: string): GameState | null {
     const value: unknown = JSON.parse(serialized);
     if (
       !isRecord(value) ||
-      value.version !== SAVE_VERSION ||
+      (value.version !== SAVE_VERSION && value.version !== 2 && value.version !== 1) ||
       typeof value.savedAt !== "string"
     ) {
       return null;
     }
-    return parseGameState(value.state);
+    return parseGameState(value.state, value.version);
   } catch {
     return null;
   }
