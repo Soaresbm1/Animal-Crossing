@@ -22,6 +22,7 @@ import type {
   Vector2,
   WorldBounds,
 } from "./types";
+import { interactProgression } from './progression';
 
 const clamp = (value: number, minimum: number, maximum: number): number =>
   Math.min(maximum, Math.max(minimum, value));
@@ -33,6 +34,10 @@ const copyVector = ({ x, y }: Vector2): Vector2 => ({ x, y });
 
 export function createInitialGameState(): GameState {
   return {
+    coins: 0,
+    quest: 'new',
+    furniture: { owned: false, position: null },
+    fishing: { rodOwned: false, collection: [], catchCount: 0 },
     scene: "island",
     player: {
       position: copyVector(INITIAL_PLAYER_POSITION),
@@ -114,6 +119,8 @@ function firstEmptyInventorySlot(state: GameState): number {
  * UI feedback. Collection has priority over a doorway when both are in range.
  */
 export function interactWithResult(state: GameState): InteractionResult {
+  const progression = interactProgression(state);
+  if (progression) return progression;
   if (state.scene === "island") {
     const collectible = state.collectibles
       .filter(

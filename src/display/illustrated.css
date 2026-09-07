@@ -1,0 +1,160 @@
+/* A sun-faded island journal, with original vector scenery. */
+.game-shell { background: #ece9df; padding: 0 24px 20px; }
+.game-header { height: 82px; padding: 12px 4px; }
+.game-header__controls { color: #68756b; font-weight: 500; }
+.game-layout { height: calc(100dvh - 102px); min-height: 550px; grid-template-columns: minmax(0, 1fr) 306px; gap: 20px; }
+.game-world { min-height: 0; border: 6px solid #fffaf0; border-radius: 12px 12px 70px 12px; box-shadow: 0 14px 40px #344d3c15; }
+.game-sidebar { display: flex; flex-direction: column; overflow: hidden; padding-right: 3px; gap: 14px; }
+.game-sidebar > .progress-panel { min-height: 0; flex: 1; overflow-y: auto; scrollbar-width: thin; }
+.brand-mark__words { gap: 0; }
+.brand-mark__words span { font-family: Georgia, serif; font-size: .36em; letter-spacing: .12em; line-height: 1.3; }
+.brand-mark__words strong { font-family: Georgia, serif; font-weight: 400; letter-spacing: -.04em; line-height: .95; }
+.brand-mark__sun { background: #c69364; box-shadow: inset 0 0 0 5px #e9d2a3; }
+.welcome-island { position: relative; width: 100%; aspect-ratio: 1.1; background: #8bbab0; border-radius: 48% 45% 42% 48%; }
+.welcome-island .scene-house { width: 32%; top: 11%; min-width: 95px; }
+.welcome-island .scene-tree { min-width: 65px; }
+.welcome-island .player { width: 45px; }
+.welcome-card__art { background: radial-gradient(ellipse, #c4d4b9, #dde4d0); padding: 24px; }
+.illustrated-landscape { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+.island-scene__water { background: radial-gradient(ellipse at 60% 45%, #b9d8c8 0, #79b9b2 49%, #4c939b 100%); }
+.island-scene__water::after { content: ''; position: absolute; inset: -20%; opacity: .16; background: repeating-radial-gradient(ellipse at 40% 50%, transparent 0 39px, #f4f6da 40px 41px, transparent 43px 66px); animation: tide 16s ease-in-out infinite alternate; }
+.scene-house { width: 27%; min-width: 130px; max-width: 245px; top: 4%; aspect-ratio: 280 / 230; filter: drop-shadow(8px 10px 3px #33432a12); }
+.scene-house svg, .scene-tree svg, .player svg, .island-resident svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.scene-tree { width: 14%; min-width: 75px; max-width: 142px; aspect-ratio: 150 / 180; filter: drop-shadow(5px 6px 3px #3c54321a); }
+.scene-tree--one { top: 29%; left: 22%; }
+.scene-tree--two { top: 57%; left: 86%; }
+.scene-tree--three { top: 75%; left: 15%; }
+.player { width: clamp(38px, 5.6%, 60px); aspect-ratio: 80 / 110; filter: drop-shadow(2px 3px 1px #4b52351a); }
+.island-resident { width: clamp(42px, 6%, 65px); transform: translate(-50%, -50%); z-index: 16; }
+.island-resident svg { aspect-ratio: 80 / 110; }
+.island-resident b { position: absolute; top: 100%; }
+.island-resident b, .island-shop b { border-radius: 3px 8px 3px 8px; background: #fff9e9e8; padding: 3px 10px; font-size: 10px; letter-spacing: .04em; font-weight: 600; color: #576248; white-space: nowrap; box-shadow: 1px 3px 0 #5d6f3420; }
+.island-shop { z-index: 10; transform: translate(-50%, -85%); }
+.island-shop > span { position: relative; width: clamp(60px, 8vw, 98px); height: 76px; border: 0; border-radius: 4px; background: linear-gradient(90deg, #866b4c 0 5%, transparent 5% 93%, #866b4c 93%), linear-gradient(0deg, #ab8057 0 26%, transparent 26%); box-shadow: 4px 5px 0 #42523116; }
+.island-shop > span::before { content: ''; position: absolute; top: -3px; left: -7%; width: 114%; height: 27px; border-radius: 7px 7px 5px 5px; background: repeating-linear-gradient(90deg, #f2dfb9 0 13px, #759880 13px 26px); transform: perspective(100px) rotateX(15deg); box-shadow: 0 4px 0 #47644533; }
+.island-shop > span::after { content: ''; position: absolute; bottom: 21px; left: -4%; width: 108%; height: 7px; background: #dcc49a; border-radius: 3px; }
+.island-shop i { position: absolute; bottom: 29px; width: 15px; height: 12px; background: #c77455; border-radius: 40%; left: 15%; box-shadow: 5px -6px 0 #ddb571; }
+.island-shop i:nth-child(2) { left: 43%; background: #80a16b; }
+.island-shop i:nth-child(3) { left: 70%; background: #e5d4a8; }
+.grass-clump { display: none; }
+.world-item { width: clamp(26px, 3.6%, 40px); filter: drop-shadow(2px 5px 2px #3d553128); }
+.world-item--apple i { background: radial-gradient(circle at 30% 27%, #f1bb80 0 7%, #d77c57 15%, #bd5749 80%); box-shadow: inset -3px -3px #a9564240; }
+.world-item--shell i { background: repeating-conic-gradient(from 200deg at 50% 85%, #cba98b 0 12deg, #f0d8b9 13deg 25deg); }
+.world-time { top: 16px; left: 16px; border-radius: 5px 16px 5px 16px; background: #fffaedeb; box-shadow: 3px 4px 0 #2d5b4420; }
+.world-time strong { font-family: Georgia, serif; font-size: 21px; font-weight: 400; }
+.world-caption { position: absolute; z-index: 31; bottom: 20px; left: 22px; display: flex; flex-direction: column; gap: 6px; pointer-events: none; color: #f9f2d9; text-shadow: 0 1px 8px #234f48; }
+.world-caption span { font-size: 8px; letter-spacing: .18em; }
+.world-caption strong { font-family: Georgia, serif; font-size: clamp(13px, 1.4vw, 20px); font-style: italic; font-weight: 400; }
+.action-prompt { bottom: 20px; right: 20px; border-radius: 7px; background: #fff8e9ee; font-weight: 500; }
+.progress-panel { padding: 20px; border-radius: 6px 22px 6px 6px; background: #fcf9ef; border-color: #d5d4c5; box-shadow: 3px 4px 0 #cacabd45; position: relative; }
+.progress-panel::before { content: ''; position: absolute; top: -5px; left: 39%; width: 60px; height: 13px; background: #d6b97675; transform: rotate(-4deg); }
+.progress-wallet { color: #927b56; font-size: 8px; letter-spacing: .1em; }
+.progress-wallet strong { font-size: 16px; letter-spacing: 0; background: #efe1b8; color: #776236; border: 1px solid #d8c895; padding: 6px 10px; }
+.progress-panel h2 { font-family: Georgia, serif; font-size: 27px; font-weight: 400; line-height: 1.15; color: #425b48; }
+.progress-panel p { color: #6d7766; font-size: 12px; line-height: 1.65; margin: 10px 0; }
+.progress-panel progress { height: 5px; accent-color: #81916d; margin-bottom: 10px; }
+.progress-panel button { border-radius: 5px; font-size: 11px; padding: 11px 7px; background: #526f58; box-shadow: 0 2px 0 #334c39; transition: background .2s, transform .2s; }
+.progress-panel button:not(:disabled):hover { background: #6b865e; transform: translateY(-1px); }
+.progress-panel button:disabled { background: #e7e8dc; color: #737d6a; box-shadow: none; }
+.progress-shop { margin: 14px 0 4px; border-color: #dfdccb; }
+.progress-shop h3 { font-family: Georgia, serif; font-weight: 400; font-size: 20px; }
+.progress-shop small { font-size: 10px; color: #7e806e; }
+.inventory-card { flex-shrink: 0; padding: 16px; background: #f7f3e7; border: 1px solid #d5d4c5; border-radius: 6px; box-shadow: 3px 4px 0 #cacabd45; }
+.inventory-card__heading h2 { font-family: Georgia, serif; font-weight: 400; font-size: 23px; }
+.inventory-card__heading p { letter-spacing: .12em; color: #9a8968; }
+.inventory-grid { gap: 6px; }
+.inventory-grid li { border-radius: 7px; background: #eae8da; border-color: #c9ceba; }
+.inventory-grid li.has-item { background: #e1e8d6; }
+.game-toast { background: #fcf7e9; color: #425944; border: 1px solid #d4c9aa; border-radius: 6px 20px 6px 20px; font-weight: 500; line-height: 1.6; }
+.house-scene__wall { background: repeating-linear-gradient(90deg, #56756508 0 28px, #fff1 28px 30px), linear-gradient(#dddac3, #eee6cd); border-bottom: 18px solid #a58b68; }
+.house-scene__floor { background: repeating-linear-gradient(90deg, transparent 0 64px, #674c3120 65px 67px), repeating-linear-gradient(0deg, #d2b287 0 47px, #c5a579 48px 49px, #d9bd94 50px 97px, #b4977344 98px 100px); }
+.inside-window { border: 8px solid #f7ecd3; border-radius: 40% 40% 3px 3px; box-shadow: 0 0 0 4px #ab9371, 5px 9px 18px #826a4530; }
+.inside-window::after { box-shadow: 40px 120px 60px 42px #fff5bd65; }
+.inside-rug { border: 8px double #e7d5ac; background: repeating-radial-gradient(ellipse, #829a7a 0 4px, #9cad8a 5px 7px, #839877 8px 13px); box-shadow: 0 3px 4px #60472728; opacity: .9; }
+.inside-bed { background: repeating-linear-gradient(0deg, transparent 0 9px, #eee4ce30 10px 11px), #9aab8d; border-color: #987958; box-shadow: 7px 12px 0 #76563d20; }
+.inside-bed i { box-shadow: 0 8px #bb9372; }
+.inside-table { background: repeating-radial-gradient(ellipse, #ccad7d 0 10px, #c4a472 11px 12px); }
+.welcome-shell { background: radial-gradient(ellipse at 25% 25%, #d8e1ca, transparent 60%), #eee9dc; }
+.welcome-card { border-radius: 12px 70px 12px 12px; background: #fcf8ec; box-shadow: 0 25px 80px #3f56451a; }
+.welcome-card__lead { color: #727c67; }
+.primary-button { background: #526f58; border-radius: 6px 18px 6px 6px; }
+.water-glints { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.water-glints i { position: absolute; width: 32px; height: 6px; border-bottom: 2px solid #edf2d77a; border-radius: 50%; animation: shimmer 5s ease-in-out infinite; }
+.water-glints i:nth-child(1) { left: 4%; top: 35%; }
+.water-glints i:nth-child(2) { right: 5%; top: 66%; animation-delay: -2s; }
+.water-glints i:nth-child(3) { left: 20%; bottom: 7%; animation-delay: -4s; }
+.water-glints i:nth-child(4) { right: 18%; top: 9%; animation-delay: -1s; }
+.drifting-cloud { position: absolute; z-index: 20; width: 30%; height: 12%; top: 17%; left: -35%; background: #fff9db26; filter: blur(15px); border-radius: 50%; pointer-events: none; animation: cloud-drift 55s linear infinite; }
+@keyframes tide { to { transform: translate(15px, 8px) scale(1.03); } }
+@keyframes shimmer { 50% { opacity: .25; transform: translateX(7px); } }
+@keyframes cloud-drift { to { left: 115%; top: 35%; } }
+@media (max-width: 1000px) { .game-layout { grid-template-columns: minmax(0, 1fr) 270px; gap: 12px; } .game-shell { padding-inline: 12px; } .world-caption { bottom: 68px; } .progress-panel { padding: 15px; } }
+@media (max-width: 740px) { .game-layout { height: auto; display: flex; flex-direction: column; } .game-world { height: 70dvh; min-height: 440px; flex-shrink: 0; } .game-sidebar { overflow: visible; } .game-sidebar > .progress-panel { flex: auto; overflow: visible; } .game-header { height: auto; min-height: 70px; } .world-caption { bottom: 20px; } .world-caption strong { display: none; } .scene-house { min-width: 115px; } .scene-tree { min-width: 65px; } }
+@media (prefers-reduced-motion: reduce) { .water-glints i, .drifting-cloud, .island-scene__water::after, .fishing-spot i, .fishing-water::after, .fishing-water > i, .fishing-game--bite > p { animation: none; } .progress-panel button { transition: none; } }
+.game-shell--immersive { height: 100dvh; min-height: 0; overflow: hidden; box-sizing: border-box; display: grid; grid-template-rows: 64px minmax(0, 1fr); padding: 0 12px 12px; }
+.game-shell--immersive .game-header { height: 64px; min-height: 0; width: 100%; padding: 6px 8px; }
+.game-shell--immersive .game-layout { display: block; width: 100%; height: 100%; min-height: 0; margin: 0; }
+.game-shell--immersive .game-world { height: 100%; min-height: 0; width: 100%; border-radius: 12px 12px 40px 12px; }
+.game-shell--immersive .game-toast { position: absolute; bottom: 70px; }
+.inventory-toggle { display: inline-flex; align-items: center; gap: 7px; padding: 7px 11px; border: 1px solid #c5ccb9; border-radius: 7px; background: #fbf7e9; color: #52694f; cursor: pointer; }
+.game-dialog { position: fixed; inset: 0; margin: auto; width: min(540px, calc(100vw - 32px)); max-height: calc(100dvh - 100px); box-sizing: border-box; overflow-y: auto; padding: 26px; border: 1px solid #d1c7ac; border-radius: 12px 30px 12px 12px; background: #fcf8eb; color: #425944; box-shadow: 0 25px 90px #203d4460; }
+.game-dialog::backdrop { background: #1d3f4352; backdrop-filter: blur(3px); }
+.game-dialog__header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 22px; }
+.game-dialog__header small { font-size: 9px; color: #9d865e; letter-spacing: .14em; }
+.game-dialog h2 { font: 30px/1.2 Georgia, serif; margin: 7px 0 0; }
+.game-dialog h3 { font: 21px/1.3 Georgia, serif; margin: 0 0 10px; }
+.game-dialog p { font-size: 14px; line-height: 1.7; }
+.game-dialog small { display: block; line-height: 1.6; }
+.game-dialog__header button { width: 34px; height: 34px; border: 1px solid #d2d2bd; border-radius: 50%; background: #ebe8d7; color: #4c604b; font-size: 24px; cursor: pointer; flex-shrink: 0; }
+.dialog-lila, .dialog-product { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 20px; align-items: center; }
+.dialog-portrait { background: #e3e7d3; border-radius: 50% 50% 12px 12px; padding: 8px; }
+.dialog-portrait svg { display: block; width: 100%; }
+.dialog-action { border: 0; border-radius: 6px; padding: 12px 16px; background: #526f58; color: #fff9e9; font: inherit; font-size: 13px; cursor: pointer; }
+.dialog-action:disabled { background: #e2e5d6; color: #747d6c; cursor: default; }
+.dialog-action:focus-visible, .game-dialog__header button:focus-visible, .inventory-toggle:focus-visible { outline: 3px solid #c59a51; outline-offset: 3px; }
+.dialog-balance { padding: 10px 14px; border-radius: 7px; background: #efe5c8; }
+.armchair-preview { position: relative; height: 105px; border-radius: 12px; background: #e9e4d1; }
+.armchair-preview .placed-armchair { left: 50%; top: 65%; }
+.dialog-sale, .dialog-furniture { border-top: 1px solid #dcd8c3; margin-top: 22px; padding-top: 20px; }
+.dialog-furniture small { margin-top: 12px; color: #79806d; }
+.game-dialog .inventory-card { border: none; padding: 0; box-shadow: none; background: none; }
+.game-dialog .inventory-card__heading { display: none; }
+.game-dialog .inventory-grid li { max-height: 95px; }
+.dialog-feedback { background: #e7ecd8; border-radius: 6px; padding: 10px 14px; }
+.game-dialog__footer { margin-top: 22px; font-size: 11px; color: #848671; text-align: center; }
+.fishing-spot { position: absolute; z-index: 14; width: 76px; height: 38px; transform: translate(-50%, -25%); pointer-events: none; }
+.fishing-spot i { position: absolute; left: 50%; top: 50%; width: 22px; height: 9px; border: 2px solid #eff0cb80; border-radius: 50%; transform: translate(-50%, -50%); animation: fishing-ripple 2.4s ease-out infinite; }
+.fishing-spot i:nth-child(2) { animation-delay: -.8s; }
+.fishing-spot i:nth-child(3) { animation-delay: -1.6s; }
+.fishing-spot--active::after { content: '⌁'; position: absolute; inset: 4px 0 auto; text-align: center; color: #344e4c99; font-size: 24px; }
+.dialog-products { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.dialog-products .dialog-product { display: flex; flex-direction: column; align-items: stretch; padding: 12px; border: 1px solid #ddd7c1; border-radius: 9px; background: #f7f1df; }
+.dialog-products .armchair-preview, .rod-preview { width: 100%; height: 95px; }
+.rod-preview { position: relative; overflow: hidden; border-radius: 12px; background: linear-gradient(#a5cac0 58%, #6ba19c 59%); }
+.rod-preview::before { content: ''; position: absolute; width: 85px; height: 85px; left: 8px; bottom: -54px; border: 4px solid #72573e; border-color: #72573e transparent transparent; border-radius: 50%; transform: rotate(22deg); }
+.rod-preview::after { content: ''; position: absolute; width: 3px; height: 73px; left: 42px; top: 9px; background: #7d6547; transform: rotate(31deg); transform-origin: bottom; }
+.rod-preview i { position: absolute; width: 1px; height: 66px; left: 73px; top: 6px; background: #f5edd3; transform: rotate(-2deg); }
+.rod-preview span { position: absolute; right: 15px; bottom: 6px; color: #e7ecc9; font-size: 28px; }
+.fish-journal { border-top: 1px solid #dcd8c3; margin-top: 22px; padding-top: 20px; }
+.fish-journal__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.fish-journal__grid > div { display: grid; min-height: 74px; place-items: center; padding: 7px; border-radius: 7px; background: #e9e8db; color: #a3a493; text-align: center; }
+.fish-journal__grid > div.is-found { background: #dce8dc; color: #4d7568; }
+.fish-journal__grid span { font-size: 25px; }
+.fish-journal__grid small { font-size: 9px; }
+.fishing-game { text-align: center; }
+.fishing-water { position: relative; overflow: hidden; height: 190px; margin-bottom: 18px; border-radius: 12px 35px 12px 12px; background: radial-gradient(ellipse at 50% 30%, #b4d6ca, #6ba8a5); }
+.fishing-water::after { content: ''; position: absolute; inset: 0; background: repeating-radial-gradient(ellipse at 50% 54%, transparent 0 22px, #e8efd142 23px 25px, transparent 27px 43px); animation: tide 5s ease-in-out infinite alternate; }
+.fishing-water > i { position: absolute; z-index: 2; left: 50%; top: 58%; width: 35px; height: 12px; border: 2px solid #eff5d5aa; border-radius: 50%; transform: translate(-50%, -50%); animation: fishing-ripple 1.8s ease-out infinite; }
+.fishing-water > i:nth-of-type(2) { animation-delay: -.6s; }
+.fishing-water > i:nth-of-type(3) { animation-delay: -1.2s; }
+.fishing-float { position: absolute; z-index: 4; left: 50%; top: 49%; width: 9px; height: 29px; border-radius: 6px; background: linear-gradient(#d46a4f 0 45%, #f4e9c6 46%); transform: translate(-50%, -50%); transition: transform .12s, top .12s; }
+.fishing-game--bite .fishing-float { top: 61%; transform: translate(-50%, -50%) rotate(12deg); }
+.fishing-game--bite .fishing-water { box-shadow: inset 0 0 55px #f5df9155; }
+.fishing-game--bite > p { color: #b64d3f; font-size: 25px; font-weight: 800; animation: bite-pulse .45s ease-in-out infinite alternate; }
+.fishing-game > p { min-height: 35px; font: 18px Georgia, serif; }
+.fishing-game > small { margin-top: 12px; color: #747c6b; }
+.item-sardine > span, .item-perch > span, .item-carp > span { color: #4f8889; }
+@keyframes fishing-ripple { from { opacity: .8; transform: translate(-50%, -50%) scale(.35); } to { opacity: 0; transform: translate(-50%, -50%) scale(2.3); } }
+@keyframes bite-pulse { to { transform: scale(1.05); } }
+@media (max-width: 600px) { .game-shell--immersive { grid-template-rows: 56px minmax(0, 1fr); padding: 0 5px 5px; } .game-shell--immersive .game-header { height: 56px; } .game-shell--immersive .game-header__controls { display: flex; gap: 6px; } .game-shell--immersive .game-header__controls > span { display: none; } .game-dialog { padding: 20px; max-height: calc(100dvh - 70px); } .dialog-lila { grid-template-columns: 65px minmax(0, 1fr); gap: 12px; } .dialog-products { grid-template-columns: 1fr; } .game-dialog h2 { font-size: 25px; } }
+.game-shell--immersive .scene-house { top: 24%; width: min(22%, 25dvh); min-width: 0; transform: translate(-50%, -86%); }

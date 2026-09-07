@@ -13,7 +13,7 @@ import {
 } from "../src/game";
 
 describe("game engine", () => {
-  it("creates a fresh island with three original collectibles and eight slots", () => {
+  it("creates an island with five mission apples and eight slots", () => {
     const first = createInitialGameState();
     const second = createInitialGameState();
 
@@ -22,6 +22,7 @@ describe("game engine", () => {
       "shell",
       "apple",
       "flower",
+      "apple", "apple", "apple", "apple",
     ]);
     expect(first.inventory).toHaveLength(INVENTORY_SIZE);
     expect(first.inventory.every((slot) => slot === null)).toBe(true);
